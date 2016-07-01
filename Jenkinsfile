@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-node('knife-wks') {
+def go() {
     stage 'Stage: SCM Checkout'
     checkout scm
     stage 'Stage: Smoke Tests'
@@ -59,3 +59,4 @@ node('knife-wks') {
         echo "Skipping upload (on branch ${env.BRANCH_NAME})"
     }
 }
+return this;
