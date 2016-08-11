@@ -41,9 +41,6 @@ def go() {
             echo "Tagging version"
             git tag ${VERSION}
             git push --tags
-        '''
-        sh '''
-            eval "$(chef shell-init sh)"
             git checkout ${VERSION}
             knife supermarket share -o .. $(knife metadata name)
             berks install
