@@ -2,6 +2,9 @@
 def go() {
     stage 'Stage: SCM Checkout'
     checkout scm
+    sh '''
+        git submodule update
+    '''
     stage 'Stage: Smoke Tests'
     echo 'Running foodcritic against recipes'
     sh '''
@@ -41,7 +44,6 @@ def go() {
             echo "Tagging version"
             git tag ${VERSION}
             git push --tags
-            eval "$(chef shell-init sh)"
             git checkout ${VERSION}
             knife supermarket share -o .. $(knife metadata name)
             berks install
