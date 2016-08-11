@@ -45,7 +45,7 @@ def go() {
             git tag ${VERSION}
             git push --tags
             git checkout ${VERSION}
-            knife supermarket share -o .. $(knife metadata name)
+            knife supermarket share -o .. ${NAME}
             berks install
             berks update
             berks upload
