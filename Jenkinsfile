@@ -2,6 +2,9 @@
 def go() {
     stage 'Stage: SCM Checkout'
     checkout scm
+    sh '''
+        git submodule update
+    '''
     stage 'Stage: Smoke Tests'
     echo 'Running foodcritic against recipes'
     sh '''
