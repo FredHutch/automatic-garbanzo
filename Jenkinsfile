@@ -33,11 +33,11 @@ def go() {
             eval "$(chef shell-init sh)"
             VERSION=$(knife metadata version)
             NAME=$(knife metadata name)
-            knife cookbook show ${VERSION} >/dev/null 2>&1 && ( \
+            knife cookbook show ${NAME} ${VERSION} >/dev/null 2>&1 && ( \
                 echo "Version ${VERSION} of ${NAME} exists on server";\
                 echo "Aborting";\
                 exit 1 ) || ( echo "${VERSION} DNE on server" )
-            knife supermarket show ${VERSION} >/dev/null 2>&1 && ( \
+            knife supermarket show ${NAME} ${VERSION} >/dev/null 2>&1 && ( \
                 echo "Version ${VERSION} of ${NAME} exists in market";\
                 echo "Aborting";\
                 exit 1 ) || ( echo "${VERSION} DNE in supermarket" )
