@@ -1,9 +1,7 @@
 #!/usr/bin/env groovy
 def go() {
     stage 'Stage: SCM Checkout'
-    dir( 'src' ){
-       checkout scm
-    }
+    checkout scm
     sh '''
         git submodule update
     '''
