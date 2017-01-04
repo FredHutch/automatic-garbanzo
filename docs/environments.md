@@ -72,9 +72,10 @@ When its time to update the environment, the garbanzo will:
 
   - generate the environment name
   - use `berks apply <environment name> --envfile=<tmpfile>`
-  - parse <tmpfile> and update JSON with attributes, description, and name
-  - write out updated <tmpfile> JSON
-  - use `knife environment from file <tmpfile>
+  - parse `<tmpfile>` and update JSON with attributes, description, and name
+  - write out updated `<tmpfile>` JSON
+  - use `knife environment from file `<tmpfile>` to upload the updated
+    environment
 
 ## Checking for Environment Cookbook
 
