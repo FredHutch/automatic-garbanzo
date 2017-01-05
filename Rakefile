@@ -3,20 +3,6 @@ require 'chef/cookbook/metadata'
 require 'chef/application/knife'
 require 'json'
 
-
-def knife_command(command)
-  begin
-    old_stdout = $stdout
-    $stdout = StringIO.new
-    opts = Chef::Application::Knife.new.options
-    Chef::Knife.run(command,opts)
-    result = $stdout.string
-  ensure
-    $stdout = old_stdout
-  end
-  return result
-end
-
 metadata_file = 'metadata.rb'
 metadata = Chef::Cookbook::Metadata.new
 metadata.from_file(metadata_file)
@@ -99,10 +85,10 @@ task :build_cookbook do
   puts "building branch #{branch} of cookbook #{cookbook_name}"
   puts "cookbook version (from metadata.rb) is #{cookbook_version}"
   puts 'searching for matching version tag in repository'
-  g = Git.init(".")
+  g = Git.init('.')
   repo_tags = g.tags
-  match_tags = repo_tags.find { |repo_tags| repo_tags.name == cookbook_version }
-  if !match_tags.nil?
+  match_tags = repo_tags.find { |t| t.name == cookbook_version }
+  unless match_tags.nil?
     puts "Matched tag #{match_tags.name} - cant build"
     raise
   end
@@ -128,7 +114,7 @@ task :build_cookbook do
   puts 'tagging and pushing tag upstream'
   g.add_tag(
     cookbook_version,
-    { :message => "Version #{cookbook_version} tagged by automatic-garbanzo" }
+    message: "Version #{cookbook_version} tagged by automatic-garbanzo"
   )
   g.push('origin', "refs/tags/#{cookbook_version}", f: true)
 
