@@ -20,14 +20,9 @@ node('knife-wks') {
         //    - it is on the production branch
         //    - it has a new version (i.e. DNE in
         //      market or server)
-        if ( env.BRANCH_NAME == 'prod' ) {
-        echo "Branch is eligible for upload- checking"
         sh '''
             eval "$(chef shell-init sh)"
-            rake build_cookbook
+            rake build
         '''
-        } else {
-        echo "Skipping upload (on branch ${env.BRANCH_NAME})"
-        }
     }
 }
