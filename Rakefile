@@ -30,6 +30,16 @@ task :test do
   puts result
 end
 
+task :build do
+  require 'git'
+  g = Git.init('.')
+  unless g.ls_files('Berksfile.lock').empty?
+    Rake::Task['build_environment'].invoke
+  else
+    Rake::Task['build_cookbook'].invoke
+  end
+end
+
 task :build_environment do
   puts "building branch #{branch} in #{cookbook_name}"
   environment_name = case branch
