@@ -2,19 +2,10 @@
 def go() {
     stage 'Stage: SCM Checkout'
     checkout scm
-    sh '''
-        git submodule update
-    '''
     stage 'Stage: Smoke Tests'
-    echo 'Running foodcritic against recipes'
     sh '''
         eval "$(chef shell-init sh)"
-        foodcritic ./recipes
-    '''
-    echo 'Running rubocop'
-    sh '''
-        eval "$(chef shell-init sh)"
-        rubocop
+        rake test
     '''
     stage 'Stage: Integration Testing'
     echo 'Starting Test Kitchen'
@@ -31,29 +22,7 @@ def go() {
         echo "Branch is eligible for upload- checking"
         sh '''
             eval "$(chef shell-init sh)"
-            VERSION=$(knife metadata version)
-            NAME=$(knife metadata name)
-            knife cookbook show ${NAME} ${VERSION} >/dev/null 2>&1 && ( \
-                echo "Version ${VERSION} of ${NAME} exists on server";\
-                echo "Aborting";\
-                exit 1 ) || ( echo "${VERSION} DNE on server" )
-            knife supermarket show ${NAME} ${VERSION} >/dev/null 2>&1 && ( \
-                echo "Version ${VERSION} of ${NAME} exists in market";\
-                echo "Aborting";\
-                exit 1 ) || ( echo "${VERSION} DNE in supermarket" )
-            echo "Tagging version"
-            git tag ${VERSION}
-            git push --tags
-            git checkout ${VERSION}
-            knife supermarket share -o .. ${NAME}
-            berks install
-            berks update
-            berks upload
-            if $(git ls-files Berksfile.lock --error-unmatch 1>/dev/null 2>&1);\
-            then \
-                echo "applying environment $(knife metadata name)" ;\
-                berks apply $(knife metadata name); \
-            fi
+            rake build_cookbook
         '''
     } else {
         echo "Skipping upload (on branch ${env.BRANCH_NAME})"
