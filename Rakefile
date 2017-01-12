@@ -33,10 +33,10 @@ end
 task :build do
   require 'git'
   g = Git.init('.')
-  unless g.ls_files('Berksfile.lock').empty?
-    Rake::Task['build_environment'].invoke
-  else
+  if g.ls_files('Berksfile.lock').empty?
     Rake::Task['build_cookbook'].invoke
+  else
+    Rake::Task['build_environment'].invoke
   end
 end
 

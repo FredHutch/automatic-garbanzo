@@ -7,10 +7,18 @@ Release:
 1. Download a .tgz release from the github release page
 1. Extract into the top level of your cookbook with this command:
 
-    tar -x --strip-components=1 -f automatic-garbanzo-<version>.tgz
+    curl -L \
+    https://github.com/FredHutch/automatic-garbanzo/archive/M.m.r.tar.gz |\
+    tar -xzv --strip-components=1 -f -
 
-This will extract the Jenkinsfile and Rakefile from the release.  Add it
-to any (existing) branches you want built automatically.
+Where _M_, _m_, and _r_ are the major, minor, and release numbers.
+
+This will extract the Jenkinsfile and Rakefile into your project. Commit these
+changes:
+
+    git commit -m "Added automatic garbanzo" -a
+
+Add to any existing branches that need to be built via merge.
 
 ## Configure Jenkins
 
