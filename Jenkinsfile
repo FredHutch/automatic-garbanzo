@@ -23,6 +23,8 @@ node('knife-wks') {
         sh '''
             eval "$(chef shell-init sh)"
             rake build
+            # Uncomment below if this is a role cookbook
+            # rake build_role
         '''
     }
 }

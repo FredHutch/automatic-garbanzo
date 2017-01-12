@@ -91,7 +91,8 @@ task :build_role do
               when 'prod'
                 cookbook_name
               else
-                "#{cookbook_name}-#{branch}"
+                puts 'not creating role object for non-prod branch'
+                next
               end
 
   puts 'building role file'
@@ -104,9 +105,10 @@ task :build_role do
   role_attrs['description'] = metadata.description
   role_attrs['json_class'] = 'Chef::Role'
   role_attrs['chef_type'] = 'role'
-  role_attrs['cookbook_versions'] = {}
+  role_attrs['run_list'] = "recipe[#{cookbook_name}::default]"
   role_attrs['default_attributes'] = {}
   role_attrs['override_attributes'] = {}
+  role_attrs['env_run_lists'] = {}
 
   puts 'writing role file'
   role_file.write(role_attrs.to_json)
