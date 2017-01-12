@@ -85,6 +85,37 @@ task :build_environment do
   sh %(knife environment from file #{environment_file.path})
 end
 
+task :build_role do
+  puts "building from branch #{branch} in #{cookbook_name}"
+  role_name = case branch
+              when 'prod'
+                cookbook_name
+              else
+                "#{cookbook_name}-#{branch}"
+              end
+
+  puts 'building role file'
+  role_file = Tempfile.new([role_name, '.json'])
+  puts "writing to #{role_file.path}"
+  role_attrs = {}
+
+  puts '... setting name and description'
+  role_attrs['name'] = role_name
+  role_attrs['description'] = metadata.description
+  role_attrs['json_class'] = 'Chef::Role'
+  role_attrs['chef_type'] = 'role'
+  role_attrs['cookbook_versions'] = {}
+  role_attrs['default_attributes'] = {}
+  role_attrs['override_attributes'] = {}
+
+  puts 'writing role file'
+  role_file.write(role_attrs.to_json)
+  role_file.close
+
+  puts 'uploading role to server'
+  sh %(knife role from file #{role_file.path})
+end
+
 task :build_cookbook do
   require 'git'
   require 'json'
