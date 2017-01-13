@@ -20,6 +20,15 @@ changes:
 
 Add to any existing branches that need to be built via merge.
 
+## For the Courageous:
+
+The update script can also install the garbanzo:
+
+    curl -L https://github.com/FredHutch/automatic-garbanzo/raw/dev/.automatic-garbanzo/tools/update.sh | /bin/bash
+
+Note that this pulls from master and may be ahead of the version subsequently
+downloaded as part of a release.
+
 ## Configure Jenkins
 
 Log into Jenkins and create a multibranch pipeline project.  Configure the

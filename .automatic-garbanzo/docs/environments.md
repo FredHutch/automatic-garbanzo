@@ -49,6 +49,8 @@ In practical steps, to develop a new feature ("featureX") using an environment c
 Environments have a number of other attributes.  These are taken from the
 environment cookbook:
 
+> *this isn't working yet! and may never unless we risk breaking precedence rules*
+
 ### Name and Description
 
 These environment attributes are taken from the metadata file (note that `name` will be hashed with the branch name as described above).  The environmen description is taken verbatim from the `description` attribute in the metadata file.
